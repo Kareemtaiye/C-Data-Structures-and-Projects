@@ -1,0 +1,16 @@
+#include <stdio.h>
+
+
+ /* Count character v-1 */
+int main()
+{
+    long inc;
+    inc = 0;
+    while(getchar() != EOF) 
+    {
+        ++inc;
+        printf("%d\n", inc);
+    }
+
+    printf("%d", inc);
+}
