@@ -6,6 +6,7 @@ int main()
 {
     long inc;
     inc = 0;
+    
     while(getchar() != EOF) 
     {
         ++inc;
