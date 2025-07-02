@@ -16,5 +16,8 @@ int main()
     //Bitwise right shift (for a << b, result = a / 2^b)
     printf("%d\n", a >> b); //(00000001)
 
+    //Bitwise XOR
+    printf("%d", a ^ b);
+
     return 0;
 }

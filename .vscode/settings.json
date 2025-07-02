@@ -1,5 +1,18 @@
 {
   "files.associations": {
+    "*.c": "c",
+    "*.cpp": "cpp",
+    "*.h": "cpp",
     "char-count-cs": "c"
-  }
+  },
+  "clang-format.style": "{BasedOnStyle: \"Google\", IndentWidth: 4}",
+  "[c]": {
+    "editor.defaultFormatter": "xaver.clang-format",
+    "editor.formatOnSave": true
+  },
+  "[cpp]": {
+    "editor.defaultFormatter": "xaver.clang-format",
+    "editor.formatOnSave": true
+  },
+  "editor.formatOnSave": true
 }
