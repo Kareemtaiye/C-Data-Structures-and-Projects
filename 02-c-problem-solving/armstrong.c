@@ -54,12 +54,44 @@ int checkArmstrongV2(int digit) {
     return original == result;
 }
 
+/* Imolementation v-3 (without any c library)*/
+int checkArmstrongV3(int digit) {
+    /* Count the number of digits*/
+    int count = 0;
+    int original = digit;
+    int digit_copy = digit;
+
+    while (digit != 0) {
+        digit = digit / 10;
+        count++;
+    }
+
+    int cnt_cpy, result, q, rem;
+    cnt_cpy = count;
+    result = rem = 0;
+    int mul = 1;
+
+    while (digit_copy != 0) {
+        rem = digit_copy % 10;
+        while (cnt_cpy != 0) {
+            mul = mul * rem;
+            cnt_cpy--;
+        }
+
+        result = result + mul;
+        mul = 1;
+        digit_copy = digit_copy / 10;
+        cnt_cpy = count;
+    }
+
+    return result == original;
+}
 int main() {
     printf("Enter your number -> ");
     int value;
 
     scanf("%d", &value);
-    int is_armstrong = checkArmstrong(value);
+    int is_armstrong = checkArmstrongV3(value);
 
     if (is_armstrong) {
         printf("value: %d is an armstrong number", value);
