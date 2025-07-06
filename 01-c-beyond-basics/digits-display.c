@@ -3,7 +3,7 @@
 int main() {
     printf(
         "Enter your text for test(Press ctrl + d to exit when finished "
-        "typing): ");
+        "typing) : ");
 
     /* Counts the number of occurence of each digits from 1 to 10 */
     int c, i, nwhite, nother;
