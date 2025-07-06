@@ -56,8 +56,9 @@ tailFunc(int n) {
 
 nonTailFunc(int n) {
     if (n == 0) {
-        return
-    };
+        return;
+    }
+
     tailFunc(n - 1);
     printf("%d", n);
 }
