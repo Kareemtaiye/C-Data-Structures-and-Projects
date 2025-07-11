@@ -1,6 +1,9 @@
 #include <stdio.h>
 #define MAX 50
 
+/* Create a function for the matrix for reuse later */
+int* multMatrix(int matA[], int matB[]) {}
+
 int main() {
     /* Specify dimension for matrix A */
     int a_row;
