@@ -35,10 +35,10 @@ int main() {
         "legacies and loves exploring cs concepts";
 
     programmer kh = {
-        .name = "Kareem Taiye",
-        .projects = 100,
-        .companies = {"Google", "OpenAI", "Meta", "Netflix", "Amazon", "Inv"},
-        .year = 2027
+        "Kareem Taiye",
+        100,
+        {"Google", "OpenAI", "Meta", "Netflix", "Amazon", "Inv"},
+        2027
         // clang format off
     };
     // clang format on

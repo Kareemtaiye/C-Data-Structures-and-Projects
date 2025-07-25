@@ -58,6 +58,46 @@ void delBeg(Node** head) {
     }
 }
 
+// Deletes a node from a position
+void delPos(Node** head, int pos) {
+    if (*head == NULL) {
+        printf("Linked list is empty\n");
+    } else if (pos < 1) {
+        printf("Not a valid list position");
+    } else if (pos == 1) {
+        Node* ptr = *head;
+        *head = (*head)->link;
+        free(ptr);
+    } else {
+        Node* current = *head;
+        Node* previous = *head;
+        int i = 1;
+        while (i < pos) {
+            previous = current;
+            current = current->link;
+            i++;
+        };
+
+        if (current == NULL) {
+            printf("Position (%d) out of bound\n", pos);
+        } else {
+            previous->link = current->link;
+            free(current);
+        }
+    }
+}
+
+// Deletes the linked list
+void delList(Node** head) {
+    Node* temp = *head;
+
+    while (*head != NULL) {
+        temp = *head;
+        *head = (*head)->link;
+        free(temp);
+    }
+}
+
 // Adds Node at the beginning(first node)
 Node* addToBeg(Node* head, int data) {
     Node* newNode = (Node*)malloc(sizeof(Node));
@@ -99,6 +139,9 @@ int main() {
     delBeg(&head);
     delEnd(head);
     delEndBetter(&head);
+    delPos(&head, 2);
+
+    delList(&head);
 
     // Prints nodes of the linked List;
     Node* ptr = head;  // Traverses the list
