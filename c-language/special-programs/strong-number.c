@@ -43,7 +43,7 @@ int checkStrongNNumberV2(int number) {
 }
 
 int main() {
-    printf("Enter your string number \n");
+    printf("Enter your strong number \n");
     int value;
 
     scanf("%d", &value);
