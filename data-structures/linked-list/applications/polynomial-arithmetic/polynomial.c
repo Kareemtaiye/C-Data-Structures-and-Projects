@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -7,19 +8,31 @@ typedef struct Node {
     struct Node *next;
 } Node;
 
+void freeList(Node *head) {
+    Node *ptr = head;
+    Node *temp = ptr;
+
+    while (ptr != NULL) {
+        free(temp);
+        ptr = ptr->next;
+        temp = NULL;
+    }
+}
+
 void printExpression(Node *head) {
     if (head == NULL) return;
     Node *ptr = head;
-    while (ptr->next != NULL) {
-        float c = ptr->coeff;
-        int e = ptr->exp;
-        Node *n = ptr->next;
-        printf("%s%.fx^%d ", c > 0 ? "+" : "-", c < 0 ? (c * 2) - c : c, e);
-        ptr = n;
+    int first = 1;
+    while (ptr != NULL) {
+        printf("%s%.fx^%d",
+               ptr->coeff >= 0 && !first  ? " + "
+               : first && ptr->coeff >= 0 ? " "
+                                          : " - ",
+               fabs(ptr->coeff), ptr->exp);
+
+        ptr = ptr->next;
+        if (first == 1) first = 0;
     }
-    float c = ptr->coeff;
-    int e = ptr->exp;
-    printf("%s%.fx^%d", c > 0 ? "+" : "-", c < 0 ? (c * 2) - c : c, e);
 }
 
 void createPolyTerm(Node **head, int coeff, int exp) {
@@ -35,13 +48,6 @@ void createPolyTerm(Node **head, int coeff, int exp) {
         *head = new_node;
         return;
     }
-
-    // // List contains one element
-    // if ((*head)->next == NULL && (*head)->exp < exp) {
-    //     new_node->next = *head;
-    //     *head = new_node;
-    //     return;
-    // }
 
     Node *ptr = *head;
     Node *prev_ptr = NULL;
@@ -98,5 +104,7 @@ int main() {
 
     printExpression(head);
 
+    // Return memory to OS.
+    freeList(head);
     return 0;
 }
