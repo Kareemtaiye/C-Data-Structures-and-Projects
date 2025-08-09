@@ -2,10 +2,8 @@
 #include <stdlib.h>
 
 #define MAX 5
-
-// ARRAY implementation of stack
-int top = -1;
-int stack_arr[MAX];  // Instead of being passed into functions
+int first = -1;
+int stack_arr[MAX];  // Making the first element the top;
 
 int isEmpty();
 int isFull();
@@ -15,52 +13,54 @@ void push(int data) {
         printf("Stack Overflow\n");
         return;
     }
-    top = top + 1;
-    stack_arr[top] = data;
-};
+    for (int i = first; i >= 0; i--) {
+        stack_arr[i + 1] = stack_arr[i];
+    }
+    stack_arr[0] = data;
+    first = first + 1;
+}
 
 int pop() {
     if (isEmpty()) {
         printf("Stack Underflow\n");
         exit(1);
     }
-    int val = stack_arr[top];
-    top = top - 1;
-    return val;
-}
+    int value = stack_arr[0];
+    for (int i = 1; i <= first; i++) {
+        stack_arr[i - 1] = stack_arr[i];
+    }
+    first = first - 1;
+    return value;
+};
 
 int isEmpty() {
-    if (top == -1)
+    if (first == -1)
         return 1;
     else
         return 0;
 }
 
 int isFull() {
-    if (top == MAX - 1)
+    if (first == MAX - 1)
         return 1;
     else
         return 0;
 }
 
 void printStack() {
-    if (isEmpty()) {
-        printf("Stack Empty\n");
-        return;
-    }
-    for (int i = 0; i <= top; i++) {
+    if (isEmpty()) return;
+
+    printf("top -> ");
+    for (int i = 0; i <= first; i++) {
         printf("[%d] ", stack_arr[i]);
-    };
-    printf("-> top\n");
+    }
 }
 
 int main() {
     push(10);
     push(20);
     push(30);
-    push(40);
-    push(50);
-
+    pop();
     printStack();
     return 0;
-}
+};
