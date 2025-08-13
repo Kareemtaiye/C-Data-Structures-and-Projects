@@ -15,7 +15,7 @@ int isFull() {
 void push(int val) {
     if (isFull()) {
         printf("Stack Overflow\n");
-        return;
+        exit(1);
     }
     stack_arr[++top] = val;
 }
