@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,45 +49,78 @@ void push(Target where, char data) {  //clang-format off
         result[++top2] = data;
 }
 
-void convert(const char expr[]) {
+void reverse(char *str) {
+    int i, j;
+    for (i = 0, j = strlen(str) - 1; i < j; i++, j--) {
+        char temp = str[i];
+        str[i] = str[j];
+        str[j] = temp;
+    }
+}
+
+void swapParenthesis(char *str) {
+    int i;
+    for (i = 0; str[i]; i++) {
+        if (str[i] == ')') {
+            str[i] = '(';
+        } else if (str[i] == '(') {
+            str[i] = ')';
+        }
+    }
+}
+
+void convert(const char *expr_inp) {
+    top = top2 = -1;
+    char expr[100];
+
+    // 1. Copy expression.
+    strcpy(expr, expr_inp);
+
+    // 2. Reverse the copied expression
+    reverse(expr);
+
+    // 3.Swap brackets
+    swapParenthesis(expr);
+
     int i, len;
     len = strlen(expr);
-    for (i = len - 1; i >= 0; i--) {
+    for (i = 0; i < len; i++) {
         char token = expr[i];
         if (token == ' ' || token == '\n') continue;
 
-        if ((token >= 'a' && token <= 'z') || (token >= 'A' && token <= 'Z') ||
-            (token >= '0' && token <= '9')) {
+        if (isalnum(token)) {
             push(RESULT, token);
 
-        } else if ((isOperator(token) && isEmpty()) ||
-                   (isOperator(token) && !isEmpty() &&
-                    precedence(token) > precedence(peek())) ||
-                   token == ')') {
+        } else if (token == '(') {
             push(STACK, token);
 
-        } else if (isOperator(token) && !isEmpty() &&
-                   precedence(token) <= precedence(peek())) {
-            push(RESULT, pop());
-
         } else if (token == ')') {
-            while (!isEmpty() || peek() != '(') {
+            while (!isEmpty() && peek() != '(') {
                 push(RESULT, pop());
             }
-            pop();
+
+            pop();  // remove '('
+
+        } else if (isOperator(token)) {
+            while (!isEmpty() && precedence(peek()) > precedence(token)) {
+                push(RESULT, pop());
+            }
+            push(STACK, token);
         }
     }
 
+    // Push any remaining operator in stack to result
     while (!isEmpty()) {
         push(RESULT, pop());
     }
 
-    int j, res_len;
-    res_len = strlen(result);
-    for (j = res_len - 1; j >= 0; j--) {
-        printf("%c", result[j]);
+    // reverse result to get prefix
+    reverse(result);
+    result[top2 + 1] = '\0';  // Null terminator
+
+    for (int i = 0; i < strlen(result); i++) {
+        printf("%c", result[i]);
     }
-    printf("\n");
 }
 
 int main() {
@@ -96,5 +130,8 @@ int main() {
 
     fgets(expr, sizeof(expr), stdin);
 
+    expr[strcspn(expr, "\n")] = '\0';
     convert(expr);
+
+    return 0;
 }
