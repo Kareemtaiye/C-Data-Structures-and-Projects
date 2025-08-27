@@ -72,7 +72,7 @@ void convertToExpTree(char *exp_input) {
 }
 
 int main() {
-    printf("Enter your expression: ");
+    printf("Enter your Postfix expression: ");
     char expr[MAX];
 
     fgets(expr, sizeof(expr), stdin);
