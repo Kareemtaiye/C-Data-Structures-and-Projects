@@ -28,9 +28,16 @@ void enqueue(int data) {
 
 
 int dequeue() {
-    if(isEmpty()) return -1;
+    if(isEmpty()) {
+        return -1;
+    }
+
     int val = queue[front];
-    front = (front +1 ) % N;
+     if(front == rear) {
+        front = rear = -1;
+    } else {
+        front = (front +1 ) % N;
+    }
     return val;
 }
 
@@ -40,6 +47,11 @@ int peek() {
 }
 
 void display() {
+    if(isEmpty()) {
+        printf("Queue is empty");
+        return;
+    }
+
     int i;
     printf("Front -> ");
     for(i = front; i != rear; i = (i + 1) % N) {
@@ -57,8 +69,12 @@ int main() {
     enqueue(500);
     dequeue();
     dequeue();
-    enqueue(900);
-    enqueue(900);
+    dequeue();
+    dequeue();
+    dequeue();
+    // enqueue(900);
+    // enqueue(900);
+    // enqueue(900);
 
     display();
 }
