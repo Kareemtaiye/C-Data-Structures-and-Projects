@@ -52,14 +52,16 @@ void display() {
 void freeQueue() {
     if (isEmpty()) return;
 
+    // Breaks the circle.
+    rear->next = NULL;
+
     Node *temp = front;
     Node *ptr;
-
-    do {
+    while (temp != NULL) {
         ptr = temp->next;
         free(temp);
         temp = ptr;
-    } while (temp != front);
+    }
 
     front = rear = NULL;
 }
