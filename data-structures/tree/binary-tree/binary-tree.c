@@ -7,8 +7,8 @@ typedef struct Node {
     struct Node *right;
 } Node;
 
+/* Recursive creation of nodes */
 Node *create() {
-    Node *new_node = malloc(sizeof(Node));
     int x;
     printf("Enter the value for the node(-1 to exit): ");
     scanf("%d", &x);
@@ -17,6 +17,7 @@ Node *create() {
         return NULL;
     }
 
+    Node *new_node = malloc(sizeof(Node));
     new_node->data = x;
 
     printf("Enter the left value of %d: \n", x);
@@ -28,6 +29,41 @@ Node *create() {
     return new_node;
 }
 
+// Pre-order traversal.
+void preOrderTraversal(Node *root) {
+    if (root == 0) {
+        return;
+    }
+
+    printf("data: %d ", root->data);
+    preOrderTraversal(root->left);
+    preOrderTraversal(root->right);
+    printf("\n");
+};
+
+// Post-order traversal.
+void postOrderTraversal(Node *root) {
+    if (root == 0) {
+        return;
+    }
+
+    preOrderTraversal(root->left);
+    preOrderTraversal(root->right);
+    printf("data: %d ", root->data);
+    printf("\n");
+};
+// In-order traversal.
+void inOrderTraversal(Node *root) {
+    if (root == 0) {
+        return;
+    }
+
+    preOrderTraversal(root->left);
+    printf("data: %d ", root->data);
+    preOrderTraversal(root->right);
+    printf("\n");
+};
+
 int main() {
     Node *root = create();
 
@@ -37,5 +73,12 @@ int main() {
         printf("left: %p data: %d right: %p\n", root->left, root->data,
                root->right);
     }
+
+    printf("\n");
+
+    preOrderTraversal(root);
+    postOrderTraversal(root);
+    inOrderTraversal(root);
+
     return 0;
 }
