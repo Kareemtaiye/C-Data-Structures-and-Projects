@@ -9,47 +9,47 @@ typedef struct Node {
 
 // Adds the first element to an empty double linked list
 void addToEmpty(Node **head, int data) {
-    Node *newNode = malloc(sizeof(Node));
-    newNode->prev = NULL;
-    newNode->data = data;
-    newNode->next = NULL;
+    Node *new_node = malloc(sizeof(Node));
+    new_node->prev = NULL;
+    new_node->data = data;
+    new_node->next = NULL;
 
-    *head = newNode;
+    *head = new_node;
 }
 
 // Adds to the beginnng of the doubly linked list.
 void addToBeg(Node **head, int data) {
-    Node *newNode = malloc(sizeof(Node));
-    newNode->prev = NULL;
-    newNode->data = data;
-    newNode->next = *head;
+    Node *new_node = malloc(sizeof(Node));
+    new_node->prev = NULL;
+    new_node->data = data;
+    new_node->next = *head;
 
     // If there are more than one node in the list, i.e the list does not
     // contain only one element
     if ((*head)->next != NULL) {
-        (*head)->prev = newNode;
+        (*head)->prev = new_node;
     }
 
-    *head = newNode;
+    *head = new_node;
 }
 
 // Adds to the end of the doubly linked list.
 
 void addToEnd(Node **head, int data) {
-    Node *newNode = malloc(sizeof(Node));
+    Node *new_node = malloc(sizeof(Node));
 
-    newNode->prev = NULL;
-    newNode->data = data;
-    newNode->next = NULL;
+    new_node->prev = NULL;
+    new_node->data = data;
+    new_node->next = NULL;
 
     // If list is empty
     if ((*head) == NULL) {
-        *head = newNode;
+        *head = new_node;
 
         // If list contains only one node.
     } else if ((*head)->next == NULL) {
-        (*head)->next = newNode;
-        newNode->prev = *head;
+        (*head)->next = new_node;
+        new_node->prev = *head;
 
         // Otherwise.
     } else {
@@ -57,8 +57,8 @@ void addToEnd(Node **head, int data) {
         while (ptr->next != NULL) {
             ptr = ptr->next;
         }
-        ptr->next = newNode;
-        newNode->prev = ptr;
+        ptr->next = new_node;
+        new_node->prev = ptr;
     }
 }
 
@@ -70,22 +70,22 @@ void addToPos(Node **head, int data, int pos) {
         return;
     }
 
-    Node *newNode = malloc(sizeof(Node));
-    newNode->prev = NULL;
-    newNode->data = data;
-    newNode->next = NULL;
+    Node *new_node = malloc(sizeof(Node));
+    new_node->prev = NULL;
+    new_node->data = data;
+    new_node->next = NULL;
 
     // If the list is empty
     if (*head == NULL) {
-        *head = newNode;
+        *head = new_node;
         return;
     }
 
     // Insert at position one
     if (pos == 1) {
-        newNode->next = *head;
-        (*head)->prev = newNode;
-        *head = newNode;
+        new_node->next = *head;
+        (*head)->prev = new_node;
+        *head = new_node;
         return;
     }
 
@@ -100,16 +100,16 @@ void addToPos(Node **head, int data, int pos) {
 
     // If position is last, Insert at end
     if (ptr == NULL) {
-        prev_ptr->next = newNode;
-        newNode->prev = prev_ptr;
+        prev_ptr->next = new_node;
+        new_node->prev = prev_ptr;
 
     }
     // Insert in the middle
     else {
-        newNode->next = ptr;
-        newNode->prev = prev_ptr;
-        ptr->prev = newNode;
-        prev_ptr->next = newNode;
+        new_node->next = ptr;
+        new_node->prev = prev_ptr;
+        ptr->prev = new_node;
+        prev_ptr->next = new_node;
     }
 }
 
@@ -120,20 +120,20 @@ void addToPos2(Node **head, int data, int pos) {
         return;
     }
 
-    Node *newNode = malloc(sizeof(Node));
-    newNode->prev = NULL;
-    newNode->data = data;
-    newNode->next = NULL;
+    Node *new_node = malloc(sizeof(Node));
+    new_node->prev = NULL;
+    new_node->data = data;
+    new_node->next = NULL;
 
     if (*head == NULL) {
-        *head = newNode;
+        *head = new_node;
         return;
     }
 
     if (pos == 1) {
-        newNode->next = *head;
-        (*head)->prev = newNode;
-        *head = newNode;
+        new_node->next = *head;
+        (*head)->prev = new_node;
+        *head = new_node;
         return;
     }
 
@@ -149,13 +149,13 @@ void addToPos2(Node **head, int data, int pos) {
 
     if (ptr == NULL) {
         printf("Position (%d) out of bound\n", pos);
-        free(newNode);
+        free(new_node);
         return;
     }
 
-    newNode->next = next_ptr;
-    newNode->prev = ptr;
-    ptr->next = newNode;
+    new_node->next = next_ptr;
+    new_node->prev = ptr;
+    ptr->next = new_node;
 }
 
 void delAtBeg(Node **head) {
