@@ -197,8 +197,8 @@ Node *searchSong(Playlist *playlist, char *title) {
 // Adds song at the end of the playlist. O(1).
 Node *add(Playlist *playlist, char *title, char *artist, int dur) {
     Node *new_song = malloc(sizeof(Node));
-    new_song->artist = artist;
-    new_song->title = title;
+    new_song->artist = strdup(artist);
+    new_song->title = strdup(title);
     new_song->duration = dur;
 
     if (isPlaylistEmpty(playlist)) {
@@ -306,7 +306,7 @@ void freePlaylistMem(Playlist *playlist) {
 
 void displayPlaylists() {
     if (isAppEmpty()) {
-        printf("App is empty");
+        printf("App is empty\n");
         return;
     }
 
@@ -316,6 +316,7 @@ void displayPlaylists() {
         printf("%d %s ", x++, current->name);
         current = current->next;
     } while (current != app->playlists);
+    printf("\n");
 }
 
 void displaySongs(Playlist *pl) {
@@ -323,6 +324,7 @@ void displaySongs(Playlist *pl) {
 
     do {
         printf("%s ", current->title);
+        current = current->next;
     } while (current != pl->songs);
 
     printf("\n");
@@ -333,10 +335,10 @@ int main() {
     app->name = strdup("Music App");
     app->playlists = NULL;
 
-    Playlist *first_playlist = createPlaylist();
+    // Playlist *first_playlist = createPlaylist();
     // Playlist *new_playlist = createPlaylist();
 
-    printf("Enter your option\n");
+    printf("\nEnter your option\n");
     int x;
     while (1) {
         printf(
@@ -350,60 +352,176 @@ int main() {
             "8. Play next song\n"
             "9. Play previous song\n"
             "10. Exit\n");
-    }
-    scanf("%d", &x);
-    switch (x) {
-        case 1:
-            createPlaylist();
-            break;
-        case 2:
-            char pl_name[100];
-            printf("Enter the name of the playlist: ");
-            fgets(pl_name, sizeof(pl_name), stdin);
-            pl_name[strspn(pl_name, "\n")] = '\0';
+        scanf("%d", &x);
 
-            Playlist *pl_search_res = searchPlaylist(pl_name);
+        char line[300], title[100], artist[100], pl_name[100], song_name[100];
+        int dur;
 
-            // Playlist not found
-            if (pl_search_res == NULL) {
-                printf("Playlist not found");
+        Playlist *pl_search_res;
+
+        Node *song_search_res;
+
+        switch (x) {
+            case 1:
+                createPlaylist();
                 break;
-            }
+            case 2:
+                printf("Enter the name of the playlist: ");
+                fgets(pl_name, sizeof(pl_name), stdin);
+                pl_name[strspn(pl_name, "\n")] = '\0';
 
-            char line[300], title[100], artist[100];
-            int dur;
-            printf(
-                "Enter the song's title, artist, and duration in the format (t "
-                "n d)\n");
+                while (getchar() != '\n');
 
-            fgets(line, sizeof(line), stdin);
-            line[strspn(line, "\n")] = '\0';
+                pl_search_res = searchPlaylist(pl_name);
 
-            sscanf(line, "\"%99[^\"]\" \"%99[^\"]\" %d", title, artist, &dur);
+                // Playlist not found
+                if (pl_search_res == NULL) {
+                    printf("Playlist not found\n");
+                    break;
+                }
 
-            Node *added_song = add(pl_search_res, title, artist, dur);
-            printf("Song: %s added to playlist: %s\n", added_song->title,
-                   pl_name);
+                printf(
+                    "Enter the song's title, artist, and duration in the "
+                    "format (t "
+                    "n d) in quotes: ");
 
-            break;
-        case 3:
-            printf(
-                "Enter the playlist name and song title in the format: (song, "
-                "pl) in quotes.\n");
-            // Node *res = searchSong()
-            break;
-        case 5:
-            printf("\nApp playlists \n");
-            displayPlaylists();
-            break;
-        case 10:
-            printf("Exiting...\n");
+                fgets(line, sizeof(line), stdin);
+                line[strspn(line, "\n")] = '\0';
 
-            return;
-            break;
-        default:
-            break;
+                while (getchar() != '\n');
+
+                sscanf(line, "\"%99[^\"]\" \"%99[^\"]\" %d", title, artist,
+                       &dur);
+
+                Node *added_song = add(pl_search_res, title, artist, dur);
+                printf("Song: %s added to playlist: %s\n", added_song->title,
+                       pl_name);
+
+                break;
+            case 3:
+                printf(
+                    "Enter the playlist name and song title in the format: (pl "
+                    "song) in quotes: ");
+
+                fgets(line, sizeof(line), stdin);
+                line[strcspn(line, "\n")] = '\0';
+
+                while (getchar() != '\n');
+
+                sscanf(line, " \"%99[^\"]\" \"%99[^\"]\"", pl_name, title);
+                pl_search_res = searchPlaylist(pl_name);
+                if (pl_search_res == NULL) {
+                    printf("Playlist not found\n");
+                    break;
+                }
+
+                song_search_res = searchSong(pl_search_res, title);
+                if (song_search_res == NULL) {
+                    printf("Song not found\n");
+                    break;
+                }
+
+                printf("Song found -> artist: %s titile: %s duration: %d",
+                       song_search_res->artist, song_search_res->title,
+                       song_search_res->duration);
+                // Node *res = searchSong()
+                break;
+
+            case 4:
+                printf("Enter the playlist name: ");
+
+                fgets(song_name, sizeof(song_name), stdin);
+
+                while (getchar() != '\n');
+
+                pl_search_res = searchPlaylist(song_name);
+
+                if (pl_search_res == NULL) {
+                    printf("Playlist not found\n");
+                    break;
+                }
+
+                printf("Playlist found -> name: %s", pl_search_res->name);
+                break;
+            case 5:
+                printf("\nApp playlists \n");
+                displayPlaylists();
+                break;
+
+            case 6:
+                printf("Enter playlist name: \n");
+                fgets(pl_name, sizeof(pl_name), stdin);
+                pl_name[strcspn(pl_name, "\n")] = '\0';
+
+                while (getchar() != '\n');
+
+                pl_search_res = searchPlaylist(pl_name);
+
+                if (pl_search_res == NULL) {
+                    printf("Playlist not found\n");
+                    break;
+                }
+
+                displaySongs(pl_search_res);
+                break;
+
+            case 7:
+                printf(
+                    "Enter the playlist name and song title in the format: (pl "
+                    "song) in quotes: ");
+
+                fgets(line, sizeof(line), stdin);
+                sscanf(line, "\"%99[^\"]\" \"%99[^\"]\"", pl_name, title);
+                while (getchar() != '\n');
+
+                pl_search_res = searchPlaylist(pl_name);
+
+                if (pl_search_res == NULL) {
+                    printf("Playlist not found\n");
+                    break;
+                }
+
+                char *del_song = deleteSong(pl_search_res, title);
+                if (del_song == NULL) {
+                    printf("Song not found\n");
+                    break;
+                }
+
+                printf("Song deleled: %s", del_song);
+
+                break;
+
+            case 8:
+            case 9:
+                printf("Enter playlist name: \n");
+
+                fgets(pl_name, sizeof(pl_name), stdin);
+
+                while (getchar() != '\n');
+
+                pl_search_res = searchPlaylist(pl_name);
+
+                if (pl_search_res == NULL) {
+                    printf("Playlist not found\n");
+                    break;
+                }
+
+                Node *curr_song =
+                    x == 9 ? prevSong(pl_search_res) : nextSong(pl_search_res);
+
+                if (curr_song == NULL) {
+                    printf("Song not found\n");
+                    break;
+                }
+
+                printf("Playing %s by %s", curr_song->title, curr_song->artist);
+                break;
+            case 10:
+                printf("Exiting...\n");
+                return 0;
+                break;
+            default:
+                break;
+        }
     }
-
-    return 0;
 }
