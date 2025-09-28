@@ -1,8 +1,8 @@
 #include <stdio.h>
 #define MAXLINE 100
 
-/* Makes the longest line implementation robust and simpler using external
-  varibables to avoid argument lists on the functions*/
+/* Makes the longest line implementation inferior and simple using external
+ * varibables to avoid argument lists on the functions*/
 
 int max;
 char longest[MAXLINE], line[MAXLINE];
@@ -32,7 +32,7 @@ int getLine() {
     extern char line[MAXLINE];
     int i = 0, c;
 
-    while ((c = getchar()) != EOF && i < MAXLINE - 1 && c != '\n') {
+    while ((c = getchar()) != EOF && i < MAXLINE - 1 && c != '\n') {  // My name
         line[i] = c;
         i++;
         fflush(stdout);
